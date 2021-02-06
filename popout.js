@@ -1,8 +1,8 @@
 const { ipcRenderer } = require('electron');
 
-const button = document.getElementById('btn');
+const terminalBtn = document.getElementById('terminal');
 
 
-button.addEventListener('click', () => {
-  ipcRenderer.send('Popup', {user: "jdog787", replname: "ot-catchup"})
+terminalBtn.addEventListener('click', () => {
+  ipcRenderer.send('Popup', {user: "jdog787", replname: "OT-Catchup"})
 });

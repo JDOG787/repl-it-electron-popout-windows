@@ -12,8 +12,10 @@ app.whenReady().then(() => {
 });
 
 ipcMain.on('Popup', (event, status) => {
-  console.log(status)
-  let Terminal = new BrowserWindow({ width: 500, height: 500 });
-  Terminal.loadURL(`https://${status.replname}.${status.user}.repl.co/__logs`)
-  // Terminal.loadURL(`file://${__dirname}/test.html`)
+  let Terminal = new BrowserWindow({ width: 600, height: 600 });
+  Terminal.loadURL(`https://repl.it/@${status.user}/${status.replname}`, {
+    webPreferences: {
+      preload: "./console.js"
+    }
+  })
 })
