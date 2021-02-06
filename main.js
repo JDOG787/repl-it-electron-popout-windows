@@ -1,10 +1,11 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron');
+const path = require("path")
 let Main;
 
 app.whenReady().then(() => {
   Main = new BrowserWindow({ 
     width: 800, height: 500, webPreferences: {
-      preload: "./popout.js",
+      preload: `${__dirname}/popout.js`,
       nodeIntegration: true
     }
   })
@@ -12,10 +13,10 @@ app.whenReady().then(() => {
 });
 
 ipcMain.on('Popup', (event, status) => {
-  let Terminal = new BrowserWindow({ width: 600, height: 600 });
-  Terminal.loadURL(`https://repl.it/@${status.user}/${status.replname}`, {
-    webPreferences: {
-      preload: "./console.js"
+  let Terminal = new BrowserWindow({ width: 600, height: 600, webPreferences: {
+      preload: "./console.js",
+      nodeIntegration: true
     }
-  })
+  });
+  Terminal.loadURL(`https://repl.it/@${status.user}/${status.replname}`)
 })
