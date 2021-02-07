@@ -14,7 +14,7 @@ app.whenReady().then(() => {
 
 ipcMain.on('Popup', (event, status) => {
   let Terminal = new BrowserWindow({ width: 600, height: 600, webPreferences: {
-      preload: "./console.js",
+      preload: `${__dirname}/console.js`,
       nodeIntegration: true
     }
   });
