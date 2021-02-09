@@ -1,17 +1,47 @@
-window.onload = () => {
-    // if (window.origin !==)
+let Path = {};
+let Keep = [
+  // Important stuff
+  '.jsx-2759849619', // the console
+  '.jsx-2460743671', // the shell
+  '.jsx-2634825231', // the new http tab explorers only
+  'jsx-428003656',
+  'script'
+]
+let Remove = (E) => {
+    E.remove();
+}
+// Options for the observer (which mutations to observe)
+const config = { attributes: true, childList: true, subtree: true };
 
-    // INJECT JS
-    document.querySelector("div > .side-nav").remove();
-    document.querySelector("div > .filetree").remove();
-    document.querySelector("div > .file-header").remove();
-    document.querySelector("div > .is-logged-in").remove();
-    document.querySelector("div > .monaco-editor-plugin").remove();
-    document.querySelector(`div[style='position: absolute; display: flex; justify-content: center; align-items: center; flex: 1 0 auto; overflow: hidden; border-radius: var(--border-radius-1); background: var(--color-background-3); cursor: row-resize; z-index: 1; left: calc(15% + 50.5px); top: calc(50% + 34px); width: calc(85% + -50.5px); height: calc(0% + 8px);']`).remove();
-    document.querySelector(`div[style="position: absolute; display: flex; justify-content: center; align-items: center; flex: 1 0 auto; overflow: hidden; border-radius: var(--border-radius-1); background: var(--color-background-3); cursor: col-resize; z-index: 1; width: calc(0% + 8px); height: calc(100% + -68px);"]`).remove();
-    // document.querySelector("div > .side-nav").remove();
-
+// Callback function to execute when mutations are observed
+const callback = (mutationsList, observer) => Walker();
+const observer = new MutationObserver(callback);
+let Walker = (Parent = document.body, Level) => {
+  if (observer && observer.dissconnct) observer.dissconnct();
+  [...Parent.children].forEach((elm) => {
+    // Basic Deletion Test
+    if (
+      !elm.children.length &&
+      !Keep.some(A => elm.matches(A))
+    ) {
+      Remove(elm);
+    } else if (!Keep.some(A => elm.matches(A))){
+      Walker(elm, true);
+    }
+    if (Keep.some(A => elm.matches(A))) {
+      elm.parentElement.style.left = "0";
+      elm.parentElement.style.top = "0";
+      elm.parentElement.style.width = "100%";
+      elm.parentElement.style.height = "100%";
+    }
+  });
+  if (Parent.children.length == 0) {
+    Remove(Parent);
+  }
+  if (!Level)
+    observer.observe(document.body, config);
 }
 
-
-
+window.onload = () => {
+    Walker();
+}
